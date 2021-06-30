@@ -1,56 +1,38 @@
 import "./App.css";
-// import TextWithImage from "./TextWithImage";
-// import SecondaryButton from "./SecondaryButton";
 import useCookie from "./useCookie";
-import ProductCard from "./ProductCard";
 
 function App() {
   const [allowGAcookie, updateAllowGAcookie] = useCookie(
     "allowGoogleAnalytics",
-    false
+    false,
+    "G-2WHW7E8WPX"
   );
 
   return (
     <div className="mx-auto container">
-      {/* <TextWithImage
-        imgSrc="https://i.insider.com/5de5784979d757159d0b6838?width=700"
-        children={
-          <div>
-            <div className="mb-6 font-bold text-5xl leading-tight">
-              Zaveza uporabnikom
-            </div>
-            <div className="text-lg font-light mb-10">
-              Želimo ponuditi najboljše možne izdelke z visoko kakovostnimi
-              sestavinami, brez aditivov, v varnem pakiranju in za vse okuse.
-            </div>
-            <SecondaryButton title="Zelim izvedeti vec"></SecondaryButton>
-          </div>
-        }
-      /> */}
-      {/* <div className="flex">
-        <ProductCard
-          productImg="https://www.argeta.com/app/uploads/2019/01/Kokosja-front-1-320x0-c-default.png"
-          title="Argeta"
-          description="Bogata izbira dobrot."
-          cta="odkrij okuse"
-        />
-        <ProductCard
-          productImg="https://www.argeta.com/app/uploads/2019/01/Kokosja-front-1-320x0-c-default.png"
-          title="Argeta"
-          description="Bogata izbira dobrot."
-          cta="odkrij okuse"
-        />
-      </div> */}
-      {/* cookie test */}
       <div>
-        <h1>allow Google Analytics: {allowGAcookie}</h1>
+        <h1>allow Google Analytics:</h1>
+        {allowGAcookie ? (
+          <div>GA is allowed</div>
+        ) : (
+          <div>GA is not allowed</div>
+        )}
         <button
-          className="bg-gray-200"
+          className="bg-gray-200 mt-2"
           onClick={() => {
             updateAllowGAcookie(true, 10);
           }}
         >
           Click to allow GA
+        </button>
+        <br></br>
+        <button
+          className="bg-red-200 mt-2"
+          onClick={() => {
+            updateAllowGAcookie(false, 10);
+          }}
+        >
+          Click to disallow GA
         </button>
       </div>
     </div>
