@@ -4,7 +4,6 @@ import useCookie from "./useCookie";
 function App() {
   const [allowGAcookie, updateAllowGAcookie] = useCookie(
     "allowGoogleAnalytics",
-    false,
     "G-2WHW7E8WPX"
   );
 

@@ -2,12 +2,12 @@ import { useState, useEffect } from "react";
 
 // get cookie item by key
 const getItem = (key) =>
-  document.cookie.split("; ").reduce((total, currentCookie) => {
+  document.cookie.split("; ").forEach((currentCookie) => {
     const item = currentCookie.split("=");
     const storedKey = item[0];
     const storedValue = item[1];
-    return key === storedKey ? decodeURIComponent(storedValue) : total;
-  }, "");
+    if (key === storedKey) return decodeURIComponent(storedValue);
+  });
 
 // set value to cookie item of key and add expiration date
 const setItem = (key, value, daysToExpiration) => {
@@ -16,8 +16,8 @@ const setItem = (key, value, daysToExpiration) => {
   document.cookie = `${key}=${value}; expires=${now.toUTCString()};`;
 };
 
-const useCookie = (key, defaultValue, GA_MEASUREMENT_ID) => {
-  const getCookie = () => getItem(key) || defaultValue;
+const useCookie = (key, GA_MEASUREMENT_ID) => {
+  const getCookie = () => getItem(key) === "true";
   const [cookie, setCookie] = useState(getCookie);
 
   const updateCookie = (value, daysToExpiration) => {
@@ -62,7 +62,6 @@ const useCookie = (key, defaultValue, GA_MEASUREMENT_ID) => {
     gtag("config", GA_MEASUREMENT_ID);
   }, [gaIsLoaded, GA_MEASUREMENT_ID]);
   // ========= END of code that handles injection of Google Analytics ===========
-
   return [cookie, updateCookie];
 };
 export default useCookie;
