@@ -1,9 +1,4 @@
-import { useState } from "react";
-/**
- * Custom hook to retrieve and store cookies for our application.
- * @param {String} key The key to store our data to
- * @param {String} defaultValue The default value to return in case the cookie doesn't exist
- */
+import { useState, useEffect } from "react";
 
 const getItem = (key) =>
   document.cookie.split("; ").reduce((total, currentCookie) => {
@@ -27,6 +22,42 @@ const useCookie = (key, defaultValue) => {
     setCookie(value);
     setItem(key, value, numberOfDays);
   };
+
+  // ========= start GA ===========
+  const [gaScriptTagWasCreated, setGaScriptTagWasCreated] = useState(false);
+  const [gaIsLoaded, setGaIsLoaded] = useState(false);
+
+  useEffect(() => {
+    if (key === "allowGoogleAnalytics" && cookie && !gaScriptTagWasCreated) {
+      console.log("yeet this shouldnt trigger", cookie);
+      // no need to add async atribute to script as its enabled by default for dynamic scripts
+      const gaScriptTag = document.createElement("script");
+      gaScriptTag.src =
+        "https://www.googletagmanager.com/gtag/js?id=G-2WHW7E8WPX";
+      gaScriptTag.addEventListener("load", () => setGaIsLoaded(true));
+      document.body.appendChild(gaScriptTag);
+      setGaScriptTagWasCreated(true);
+    }
+  }, [key, cookie, gaScriptTagWasCreated]);
+
+  useEffect(() => {
+    console.log("yeet", gaIsLoaded);
+    if (!gaIsLoaded) return;
+
+    if (typeof window == "undefined") {
+      return;
+    }
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      window.dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+
+    gtag("config", "G-2WHW7E8WPX");
+  }, [gaIsLoaded]);
+  // "G-2WHW7E8WPX"
+
+  // ========= end GA ===========
 
   return [cookie, updateCookie];
 };

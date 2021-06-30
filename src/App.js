@@ -5,7 +5,10 @@ import useCookie from "./useCookie";
 import ProductCard from "./ProductCard";
 
 function App() {
-  const [cookie, updateCookie] = useCookie("username", "DefaultUsername");
+  const [allowGAcookie, updateAllowGAcookie] = useCookie(
+    "allowGoogleAnalytics",
+    false
+  );
 
   return (
     <div className="mx-auto container">
@@ -40,15 +43,14 @@ function App() {
       </div> */}
       {/* cookie test */}
       <div>
-        <h1>Cookie:</h1>
-        <h1>{cookie}</h1>
+        <h1>allow Google Analytics: {allowGAcookie}</h1>
         <button
           className="bg-gray-200"
           onClick={() => {
-            updateCookie("updatedUsername", 10);
+            updateAllowGAcookie(true, 10);
           }}
         >
-          Store Cookie
+          Click to allow GA
         </button>
       </div>
     </div>
